@@ -1,8 +1,12 @@
 import React from 'react';
+import mp3 from './componentes/mp3';
 
 const App = () => {
     return (
-        <h1>REACT APP</h1>
+        <>
+        
+        <Mp3Audio/>
+        </>
     )
 }
 
