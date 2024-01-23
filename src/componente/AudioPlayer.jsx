@@ -7,7 +7,7 @@ const AudioPlayer = () => {
 
     const [songs, setSongs] = useState([]);
     const [currentsong, setCurrentSong] = useState();
-    const audioRef = useRef();
+    const audioRef = useRef(null);
 
     useEffect(() => {
         obtenerCanciones()
@@ -26,49 +26,53 @@ const AudioPlayer = () => {
             })
     }
 
-    const cambiarCancion = (cancion) =>{
-setCurrentSong (`https://assets.breatheco.de/apis/sound/${cancion.url}`)   
-} 
-  /*   const songUrl = "https://playground.4geeks.com/apis/fake/sound" */
 
-   /*  const playcancion = (cancionIndex) => {
-        const cancion = songs[cancionIndex];
-        setCurrentSong(cancionIndex);
-        audioRef.current.src = songUrl + cancion.url;
-        audioRef.current.play();
-    }; */
+    const cambiarCancion = (cancion, index) => {
+        const songUrl = "https://playground.4geeks.com/apis/fake/sound/" + cancion.url
+        console.log(songUrl)
+        audioRef.current.src = songUrl
+        setCurrentSong(index)
+    }
 
-    /* const stopCancion = () => {
-        audioRef.current.pause();
-    }; */
- 
-   /*  const siguienteCancion = () =>{
-        const nextsong = (currentsong + 1);
-        playcancion(nextsong);
+
+
+    const siguienteCancion = () => {
+        if (currentsong <= songs.length) {
+            const nextsong = songs[currentsong + 1]
+            const url = "https://playground.4geeks.com/apis/fake/sound/" + nextsong.url
+            audioRef.current.src = url
+            console.log(nextsong)
+            setCurrentSong(currentsong + 1)
+        }
+        else {
+            setCurrentSong(0)
+            const urls = "https://playground.4geeks.com/apis/fake/sound/" + songs[currentsong].url
+            audioRef.current.src = urls
+        }
+
     };
- 
+
     const previaCancion = () => {
-        const lastsong = (currentsong -1)};
-        playcancion(lastsong);
+        const lastsong = (currentsong - 1)
     };
- */
-    return (
-        <> 
-     <audio src= {currentsong} controls></audio>
 
-    
-           {/*  <div className="control-players">
-                <button onClick={previaCancion }><IoPlayBackSharp /></button>
-                <button onClick={stopCancion }><IoPlaySharp /></button>
-                <button onClick={siguienteCancion }><IoPlayForwardSharp /></button>
-            </div> */}
+
+    return (
+        <>
+            <audio controls ref={audioRef} />
+
+
+            <div className="control-players">
+                <button onClick={previaCancion}><IoPlayBackSharp /></button>
+                <button onClick={siguienteCancion}><IoPlayForwardSharp /></button>
+            </div>
             <ul>
-            {
-                Array.isArray(songs) && songs.length > 0 &&
-                songs.map((cancion, id) => {
-                    return <li key={id} onClick={()=>cambiarCancion(cancion)}>{cancion.name}</li>
-                })
-            }
+                {
+                    Array.isArray(songs) && songs.length > 0 &&
+                    songs.map((cancion, index) => {
+                        return <li key={index} onClick={() => cambiarCancion(cancion, index)}>{cancion.name}</li>
+                    })
+                }
             </ul>
         </>
     )
