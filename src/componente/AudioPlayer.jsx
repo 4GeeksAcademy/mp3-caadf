@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IoPlayBackSharp } from "react-icons/io5"
 import { IoPlaySharp, IoPlayBackSharp, IoPlayForwardSharp } from "react-icons/io5";
 
 
 
-const Mp3audio = () => {
+const AudioPlayer = () => {
 
     const [songs, setSongs] = useState([]);
-    const [currentsong, setCurrentSong] = useState(null);
+    const [currentsong, setCurrentSong] = useState();
     const audioRef = useRef();
 
     useEffect(() => {
@@ -23,43 +22,57 @@ const Mp3audio = () => {
             })
             .then((data) => {
                 console.log(data)
-                setSongs(data.results)
+                setSongs(data)
             })
     }
 
-    const songUrl = "https://playground.4geeks.com/apis/fake/sound"
+    const cambiarCancion = (cancion) =>{
+setCurrentSong (`https://assets.breatheco.de/apis/sound/${cancion.url}`)   
+} 
+  /*   const songUrl = "https://playground.4geeks.com/apis/fake/sound" */
 
-    const playcancion = (cancionIndex) => {
+   /*  const playcancion = (cancionIndex) => {
         const cancion = songs[cancionIndex];
         setCurrentSong(cancionIndex);
-        audioRef.current.src = songUrl + songUrl.url;
+        audioRef.current.src = songUrl + cancion.url;
         audioRef.current.play();
-    };
+    }; */
 
-    const stopCancion = () => {
+    /* const stopCancion = () => {
         audioRef.current.pause();
-    };
+    }; */
  
-    const siguienteCancion = () =>{
-        const nextsong = (currentsong + 1) % songs.length;
+   /*  const siguienteCancion = () =>{
+        const nextsong = (currentsong + 1);
         playcancion(nextsong);
     };
  
     const previaCancion = () => {
-        const lastsong = (currentsong -1) % songs.length;
+        const lastsong = (currentsong -1)};
         playcancion(lastsong);
     };
-
+ */
     return (
-        <>
-            <div className="control-players">
+        <> 
+     <audio src= {currentsong} controls></audio>
+
+    
+           {/*  <div className="control-players">
                 <button onClick={previaCancion }><IoPlayBackSharp /></button>
                 <button onClick={stopCancion }><IoPlaySharp /></button>
                 <button onClick={siguienteCancion }><IoPlayForwardSharp /></button>
-            </div>
+            </div> */}
+            <ul>
+            {
+                Array.isArray(songs) && songs.length > 0 &&
+                songs.map((cancion, id) => {
+                    return <li key={id} onClick={()=>cambiarCancion(cancion)}>{cancion.name}</li>
+                })
+            }
+            </ul>
         </>
     )
 
 }
 
-export default Mp3audio
+export default AudioPlayer

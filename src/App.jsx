@@ -1,11 +1,11 @@
 import React from 'react';
-import mp3 from './componentes/mp3';
+import AudioPlayer from './componente/AudioPlayer';
 
 const App = () => {
     return (
         <>
         
-        <Mp3Audio/>
+        <AudioPlayer/>
         </>
     )
 }
