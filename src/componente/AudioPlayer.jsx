@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IoPlaySharp, IoPlayBackSharp, IoPlayForwardSharp } from "react-icons/io5";
+import { IoPlayBackSharp, IoPlayForwardSharp } from "react-icons/io5";
 
 
 
 const AudioPlayer = () => {
 
     const [songs, setSongs] = useState([]);
-    const [currentsong, setCurrentSong] = useState();
+    const [currentsong, setCurrentSong] = useState(0);
     const audioRef = useRef(null);
 
     useEffect(() => {
@@ -28,44 +28,46 @@ const AudioPlayer = () => {
 
 
     const cambiarCancion = (cancion, index) => {
+        console.log(index)
         const songUrl = "https://playground.4geeks.com/apis/fake/sound/" + cancion.url
-        console.log(songUrl)
         audioRef.current.src = songUrl
         setCurrentSong(index)
     }
 
 
 
-    const siguienteCancion = () => {
-        if (currentsong <= songs.length) {
-            const nextsong = songs[currentsong + 1]
-            const url = "https://playground.4geeks.com/apis/fake/sound/" + nextsong.url
-            audioRef.current.src = url
-            console.log(nextsong)
-            setCurrentSong(currentsong + 1)
-        }
-        else {
-            setCurrentSong(0)
-            const urls = "https://playground.4geeks.com/apis/fake/sound/" + songs[currentsong].url
-            audioRef.current.src = urls
-        }
+    const siguienteCancion = (currentsong) => {
+
+        const nextsong = currentsong + 1 === songs.length ? songs[0] : songs[currentsong + 1]
+        const url = "https://playground.4geeks.com/apis/fake/sound/" + nextsong.url
+        audioRef.current.src = url
+        console.log(nextsong)
+        setCurrentSong(currentsong + 1 === songs.length ? 0 : currentsong + 1)
+
 
     };
 
-    const previaCancion = () => {
-        const lastsong = (currentsong - 1)
+    const previaCancion = (currentsong) => {
+        console.log(currentsong);
+        const nextsong = currentsong - 1 < 0 ? songs[songs.length - 1] : songs[currentsong - 1]
+        const url = "https://playground.4geeks.com/apis/fake/sound/" + nextsong.url
+        audioRef.current.src = url
+        console.log(nextsong)
+        setCurrentSong(currentsong - 1 < 0 ? songs.length - 1 : currentsong - 1)
     };
 
 
     return (
         <>
+        <div clasName="container">
             <audio controls ref={audioRef} />
 
 
             <div className="control-players">
-                <button onClick={previaCancion}><IoPlayBackSharp /></button>
-                <button onClick={siguienteCancion}><IoPlayForwardSharp /></button>
+                <button onClick={() => previaCancion(currentsong)}><IoPlayBackSharp /></button>
+                <button onClick={() => siguienteCancion(currentsong)}><IoPlayForwardSharp /></button>
             </div>
+            <div>{songs.length}</div>
             <ul>
                 {
                     Array.isArray(songs) && songs.length > 0 &&
@@ -74,6 +76,7 @@ const AudioPlayer = () => {
                     })
                 }
             </ul>
+            </div> 
         </>
     )
 
