@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IoPlayBackSharp, IoPlayForwardSharp } from "react-icons/io5";
+import { IoPlayBackSharp, IoPlaySharp, IoPlayForwardSharp, IoPauseSharp } from "react-icons/io5";
 
 
 
@@ -47,6 +47,23 @@ const AudioPlayer = () => {
 
     };
 
+    const playcancion = (songindex) => {
+        const nextsong = songs[songindex]
+        setCurrentSong(songindex)
+        const url = "https://playground.4geeks.com/apis/fake/sound/" + nextsong.url
+        audioRef.current.src = url
+        audioRef.current.play()
+    };
+
+
+    const pausecancion = () => {
+        if (!audioRef.current.paused) {
+            audioRef.current.pause()
+        }
+
+    }
+
+
     const previaCancion = (currentsong) => {
         console.log(currentsong);
         const nextsong = currentsong - 1 < 0 ? songs[songs.length - 1] : songs[currentsong - 1]
@@ -59,23 +76,25 @@ const AudioPlayer = () => {
 
     return (
         <>
-        <div className="container">
-            <audio controls ref={audioRef} />
+            <div className="container">
+                <audio ref={audioRef} />
 
 
-            <div className="control-players">
-                <button onClick={() => previaCancion(currentsong)}><IoPlayBackSharp /></button>
-                <button onClick={() => siguienteCancion(currentsong)}><IoPlayForwardSharp /></button>
+                <div className="control-players">
+                    <button onClick={() => previaCancion(currentsong)}><IoPlayBackSharp /></button>
+                    <button onClick={() => playcancion(currentsong)}><IoPlaySharp /></button>
+                    <button onClick={() => pausecancion(currentsong)}><IoPauseSharp /></button>
+                    <button onClick={() => siguienteCancion(currentsong)}><IoPlayForwardSharp /></button>
+                </div>
+                <ol>
+                    {
+                        Array.isArray(songs) && songs.length > 0 &&
+                        songs.map((cancion, index) => {
+                            return <li key={index} onClick={() => cambiarCancion(cancion, index)}>{cancion.name}</li>
+                        })
+                    }
+                </ol>
             </div>
-            <ol>
-                {
-                    Array.isArray(songs) && songs.length > 0 &&
-                    songs.map((cancion, index) => {
-                        return <li key={index} onClick={() => cambiarCancion(cancion, index)}>{cancion.name}</li>
-                    })
-                }
-            </ol>
-            </div> 
         </>
     )
 
