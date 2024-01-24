@@ -59,7 +59,7 @@ const AudioPlayer = () => {
 
     return (
         <>
-        <div clasName="container">
+        <div className="container">
             <audio controls ref={audioRef} />
 
 
@@ -67,15 +67,14 @@ const AudioPlayer = () => {
                 <button onClick={() => previaCancion(currentsong)}><IoPlayBackSharp /></button>
                 <button onClick={() => siguienteCancion(currentsong)}><IoPlayForwardSharp /></button>
             </div>
-            <div>{songs.length}</div>
-            <ul>
+            <ol>
                 {
                     Array.isArray(songs) && songs.length > 0 &&
                     songs.map((cancion, index) => {
                         return <li key={index} onClick={() => cambiarCancion(cancion, index)}>{cancion.name}</li>
                     })
                 }
-            </ul>
+            </ol>
             </div> 
         </>
     )
