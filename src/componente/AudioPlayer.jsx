@@ -32,6 +32,7 @@ const AudioPlayer = () => {
         const songUrl = "https://playground.4geeks.com/apis/fake/sound/" + cancion.url
         audioRef.current.src = songUrl
         setCurrentSong(index)
+        playcancion()
     }
 
 
@@ -43,15 +44,10 @@ const AudioPlayer = () => {
         audioRef.current.src = url
         console.log(nextsong)
         setCurrentSong(currentsong + 1 === songs.length ? 0 : currentsong + 1)
-
-
     };
 
-    const playcancion = (songindex) => {
-        const nextsong = songs[songindex]
-        setCurrentSong(songindex)
-        const url = "https://playground.4geeks.com/apis/fake/sound/" + nextsong.url
-        audioRef.current.src = url
+    const playcancion = () => {
+
         audioRef.current.play()
     };
 
